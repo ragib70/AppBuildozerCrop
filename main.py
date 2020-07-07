@@ -154,6 +154,8 @@ Screen:
                             text: "Reset"
                             size_hint: (0.2,None)
                             height: dp(50)
+                            on_release:
+                                app.reset()
 
 
             Screen:
@@ -194,6 +196,13 @@ class TestNavigationDrawer(MDApp):
 
     def close_dialog(self,obj):
         self.dialog.dismiss()
+
+
+    def reset(self):
+        self.root.ids.moisture.text = ""
+        self.root.ids.nitrogen.text = ""
+        self.root.ids.potassium.text = ""
+        self.root.ids.phosphorus.text = ""     
 
 
     def predict(self):

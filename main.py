@@ -7,13 +7,24 @@ from kivy.core.window import Window
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.list import OneLineAvatarListItem
+from kivymd.uix.list import OneLineListItem, OneLineIconListItem
 from kivy.properties import StringProperty
+from kivymd.uix.card import MDCard
+from kivy.uix.image import Image
+from kivymd.uix.label import MDLabel
 
 from kivymd.app import MDApp
 
-Window.size = (360,600)
+# Window.size = (600,500)
+
 
 KV = '''
+
+<Item>
+
+    ImageLeftWidget:
+        source: root.source
+
 <ContentNavigationDrawer>:
     orientation: "vertical"
     padding: "8dp"
@@ -161,17 +172,35 @@ Screen:
             Screen:
                 name: "scr 2"
 
-                MDToolbar:
-                    id: toolbar
-                    pos_hint: {"top": 1}
-                    elevation: 10
-                    title: "USA Crops"
-                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                BoxLayout:
+                    orientation: 'vertical'
 
+                    MDToolbar:
+                        id: toolbar
+                        pos_hint: {"top": 1}
+                        elevation: 10
+                        title: "USA Crops"
+                        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
-                MDLabel:
-                    text: "Screen 2"
-                    halign: "center"
+                    ScrollView:
+
+                        MDList:
+                            id: md_list
+                            #
+                            # MDCard:
+                            #     size_hint: None, None
+                            #     size: root.width,300
+                            #     pos_hint: {"center_x": .5, "center_y": .5}
+                            #     Image:
+                            #         source:"USA_flag_icon.png"
+                            #         allow_stretch:"True"
+                            #         keep_ratio:"False"
+                            #
+                            # MDCard:
+                            #     size_hint: None, None
+                            #     size: self.parent.width,300
+                            #     pos_hint: {"center_x": .5, "center_y": .5}
+
 
         MDNavigationDrawer:
             id: nav_drawer
@@ -202,7 +231,7 @@ class TestNavigationDrawer(MDApp):
         self.root.ids.moisture.text = ""
         self.root.ids.nitrogen.text = ""
         self.root.ids.potassium.text = ""
-        self.root.ids.phosphorus.text = ""     
+        self.root.ids.phosphorus.text = ""
 
 
     def predict(self):
@@ -229,11 +258,11 @@ class TestNavigationDrawer(MDApp):
                 title="Crop Suggestions",
                 type="simple",
                 items=[
-                    Item(text=result[0]),
-                    Item(text=result[1]),
-                    Item(text=result[2]),
-                    Item(text=result[3]),
-                    Item(text=result[4])],
+                    Item(text=result[0],source="wheat.png"),
+                    Item(text=result[1],source="wheat.png"),
+                    Item(text=result[2],source="wheat.png"),
+                    Item(text=result[3],source="wheat.png"),
+                    Item(text=result[4],source="wheat.png")],
                 radius=[20, 7, 20, 7],
                 size_hint= (0.75,0.8),
                 buttons= [close_button2])
@@ -243,6 +272,16 @@ class TestNavigationDrawer(MDApp):
     def build(self):
         self.theme_cls.primary_palette = "Green"
         return Builder.load_string(KV)
+
+    def on_start(self):
+        for i in range(100):
+            card = MDCard(orientation='vertical',size_hint=(None,None), size = (self.root.width,300))
+            imgr = Image(source="USA_flag_icon.png", size_hint_y = 0.8, allow_stretch="True", keep_ratio="False")
+            lbl = MDLabel(text="USATest", size_hint_y = 0.2, halign = 'center', valign = 'center')
+            card.add_widget(imgr)
+            card.add_widget(lbl)
+            self.root.ids.md_list.add_widget(card)
+
 
 
 TestNavigationDrawer().run()

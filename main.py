@@ -274,10 +274,10 @@ class TestNavigationDrawer(MDApp):
         return Builder.load_string(KV)
 
     def on_start(self):
-        for i in range(100):
+        for crop in sorted(Feedforward.labels):
             card = MDCard(orientation='vertical',size_hint=(None,None), size = (self.root.width,300))
-            imgr = Image(source="USA_flag_icon.png", size_hint_y = 0.8, allow_stretch="True", keep_ratio="False")
-            lbl = MDLabel(text="USATest", size_hint_y = 0.2, halign = 'center', valign = 'center')
+            imgr = Image(source="images/"+str(crop)+str(".jpg"), size_hint_y = 0.8, allow_stretch="True", keep_ratio="False")
+            lbl = MDLabel(text=str(crop), size_hint_y = 0.2, halign = 'center', valign = 'center')
             card.add_widget(imgr)
             card.add_widget(lbl)
             self.root.ids.md_list.add_widget(card)
